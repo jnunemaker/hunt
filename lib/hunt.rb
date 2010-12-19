@@ -12,6 +12,7 @@ module Hunt
     end
 
     def searches(*keys)
+      # Using a hash to support multiple indexes per document at some point
       key(:searches, Hash)
       @search_keys = keys
     end
