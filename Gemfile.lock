@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    hunt (0.0.1)
+    hunt (0.1)
       fast-stemmer (~> 1.0)
 
 GEM
