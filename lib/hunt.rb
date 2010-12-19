@@ -15,6 +15,12 @@ module Hunt
       key(:searches, Hash)
       @search_keys = keys
     end
+
+    def search(value)
+      terms = Util.to_stemmed_words(value)
+      return [] if terms.blank?
+      where('searches.default' => terms)
+    end
   end
 
   module InstanceMethods
@@ -22,12 +28,12 @@ module Hunt
       self.class.search_keys
     end
 
-    def merged_search_key_values
+    def concatted_search_values
       search_keys.map { |key| send(key) }.flatten.join(' ')
     end
 
     def index_search_terms
-      self.searches['default'] = Util.to_words(merged_search_key_values)
+      self.searches['default'] = Util.to_stemmed_words(concatted_search_values)
     end
   end
 end
