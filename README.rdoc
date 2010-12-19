@@ -1,0 +1,38 @@
+= Hunt
+
+Insanely stupid and basic indexed search for MongoMapper.
+
+== Usage
+
+Declare the plugin.
+
+  class Note
+    include MongoMapper::Document
+    plugin Hunt
+
+    key :title, String
+    key :body, String
+    key :tags, Array
+    timestamps!
+
+    searches :title, :body, :tags
+  end
+
+This creates a key named searches that is a Hash. Title, body, and tags get mashed together before save into a unique array of stemmed words and stored in searches.default. You can index this by itself or with any other combination of keys and get basic searching.
+
+  Note.ensure_index :'searches.default' # or ...
+  Note.ensure_index [[:user_id, Mongo::Ascending], [:'searches.default', Mongo::Ascending]]
+
+== Note on Patches/Pull Requests
+
+* Fork the project.
+* Make your feature addition or bug fix.
+* Add tests for it. This is important so I don't break it in a
+  future version unintentionally.
+* Commit, do not mess with rakefile, version, or history.
+  (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
+* Send me a pull request. Bonus points for topic branches.
+
+== Copyright
+
+Copyright (c) 2010 John Nunemaker. See LICENSE for details.
