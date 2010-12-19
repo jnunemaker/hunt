@@ -24,12 +24,8 @@ module Hunt
   end
 
   module InstanceMethods
-    def search_keys
-      self.class.search_keys
-    end
-
     def concatted_search_values
-      search_keys.map { |key| send(key) }.flatten.join(' ')
+      self.class.search_keys.map { |key| send(key) }.flatten.join(' ')
     end
 
     def index_search_terms
