@@ -1,4 +1,5 @@
 require 'fast_stemmer'
+require 'mongo_mapper'
 require 'hunt/util'
 
 module Hunt
