@@ -1,6 +1,6 @@
 = Hunt
 
-Insanely stupid and basic indexed search for MongoMapper.
+Insanely stupid and basic indexed search for MongoMapper. Probably pointless, but something I am playing around with on side projects.
 
 == Usage
 
@@ -18,10 +18,29 @@ Declare the plugin.
     searches :title, :body, :tags
   end
 
-This creates a key named searches that is a Hash. Title, body, and tags get mashed together before save into a unique array of stemmed words and stored in searches.default. You can index this by itself or with any other combination of keys and get basic searching.
+This creates a key named searches that is a Hash. Title, body, and tags get mashed together before save into a unique array of stemmed words and stored in searches.default.
+
+You can index the terms individually or with any other combination of keys.
 
   Note.ensure_index :'searches.default' # or ...
   Note.ensure_index [[:user_id, Mongo::Ascending], [:'searches.default', Mongo::Ascending]]
+
+You also get a search class method that returns a scope.
+
+  # Returns Plucky::Query (MM Scope), no query actually fired
+  Note.search('mongodb')
+
+  # Gets everything matching mongodb
+  Note.search('mongodb').all
+
+  # Gets first page of everything matching mongodb
+  Note.search('mongodb').paginate(:page => 1)
+
+  # Counts everything matching mongodb
+  Note.search('mongodb').count
+
+  # Matches everything with any of the terms
+  Note.search('mongodb is awesome')
 
 == Note on Patches/Pull Requests
 
