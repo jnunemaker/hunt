@@ -3,6 +3,7 @@ PATH
   specs:
     hunt (0.1)
       fast-stemmer (~> 1.0)
+      mongo_mapper (~> 0.8.6)
 
 GEM
   remote: http://rubygems.org/
@@ -40,5 +41,5 @@ DEPENDENCIES
   fast-stemmer (~> 1.0)
   hunt!
   i18n
-  mongo_mapper (~> 0.8)
+  mongo_mapper (~> 0.8.6)
   rspec (~> 2.3)
