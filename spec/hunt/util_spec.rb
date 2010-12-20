@@ -40,8 +40,8 @@ describe Hunt::Util do
       Hunt::Util.to_words('Sweet First Sentence').should == %w(sweet first sentence)
     end
 
-    it "removes any words under 3 characters" do
-      Hunt::Util.to_words('my first sentence').should == %w(first sentence)
+    it "removes any words under 2 characters" do
+      Hunt::Util.to_words('a tv show').should == %w(tv show)
     end
 
     it "removes words that should be ignored" do
