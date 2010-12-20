@@ -10,7 +10,7 @@ class Note
 
   key :title, String
 
-  # Declare which fields to search on
+  # Declare which fields to search on.
   searches :title
 end
 Note.delete_all # clean the slate
@@ -18,7 +18,7 @@ Note.delete_all # clean the slate
 # Note that the search terms are stored in a searches hash in the key default.
 # This is so that future versions can allow different combinations of search
 # fields and use different keys in searches.
-
+#
 # Also, meaningless words are stripped out and all words less than 3 characters
 # long. The words are then stemmed (http://en.wikipedia.org/wiki/Stemming) so
 # exact matches when searching are not necessary.
