@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    hunt (0.1)
+    hunt (0.2)
       fast-stemmer (~> 1.0)
       mongo_mapper (~> 0.8.6)
 
