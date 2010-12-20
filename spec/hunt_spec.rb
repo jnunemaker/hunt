@@ -74,8 +74,15 @@ describe Hunt do
         result['searches.default'].should == {'$in' => Hunt::Util.to_stemmed_words(note.concatted_search_values)}
       end
 
-      it "does return matched documents" do
+      it "returns documents that match both terms" do
         result.all.should include(note)
+      end
+
+      it "returns documents that match any of the terms" do
+        awesome = Note.create(:title => 'Something awesome')
+        mongodb = Note.create(:title => 'Something MongoDB')
+        result.all.should include(awesome)
+        result.all.should include(mongodb)
       end
 
       it "does not query unmatched documents" do
