@@ -5,9 +5,19 @@ class Note
 
   plugin Hunt
 
-  key :title, String
-  key :body,  String
-  key :tags,  Array
+  scope :by_user, lambda { |user| where(:user_id => user.id) }
+
+  key :title,   String
+  key :body,    String
+  key :tags,    Array
+  key :user_id, ObjectId
+
+  belongs_to :user
+end
+
+class User
+  include MongoMapper::Document
+  many :notes
 end
 
 describe Hunt do
@@ -22,17 +32,42 @@ describe Hunt do
       Note.searches(:title)
     end
 
-    it "returns empty array if nil" do
-      Note.search(nil).should == []
+    it "returns query that matches nothing if nil" do
+      Note.create(:title => 'Mongo')
+      Note.search(nil).count.should == 0
     end
 
-    it "returns empty array if blank" do
-      Note.search('').should == []
+    it "returns query that matches nothing if blank" do
+      Note.create(:title => 'Mongo')
+      Note.search('').count.should == 0
+    end
+
+    context "chained on scope" do
+      before(:each) do
+        @user = User.create
+        @note = Note.create(:title => 'Mongo', :user_id => @user.id)
+      end
+
+      it "works" do
+        Note.by_user(@user).search('Mongo').all.should == [@note]
+      end
+    end
+
+    context "chained on association" do
+      before(:each) do
+        @user = User.create
+        @note = Note.create(:title => 'Mongo', :user_id => @user.id)
+      end
+
+      it "works" do
+        @user.notes.search('Mongo').all.should == [@note]
+        @user.notes.search('Frank').all.should == []
+      end
     end
 
     context "with one search term" do
       before(:each) do
-        @note = Note.create(:title => 'MongoDB is awesome!')
+        @note   = Note.create(:title => 'MongoDB is awesome!')
         @result = Note.search('mongodb')
       end
 
@@ -59,7 +94,7 @@ describe Hunt do
 
     context "with multiple search terms" do
       before(:each) do
-        @note = Note.create(:title => 'MongoDB is awesome!')
+        @note   = Note.create(:title => 'MongoDB is awesome!')
         @result = Note.search('mongodb is awesome')
       end
 

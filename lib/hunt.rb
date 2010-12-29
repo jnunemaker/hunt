@@ -18,10 +18,8 @@ module Hunt
       @search_keys = keys
     end
 
-    def search(value)
-      terms = Util.to_stemmed_words(value)
-      return [] if terms.blank?
-      where('searches.default' => terms)
+    def search(term)
+      where('searches.default' => Util.to_stemmed_words(term))
     end
   end
 
