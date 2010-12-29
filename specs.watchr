@@ -1,15 +1,3 @@
-def growl(title, msg, img)
-  %x{growlnotify -m #{ msg.inspect} -t #{title.inspect} --image ~/.watchr/#{img}.png}
-end
-
-def form_growl_message(str)
-  msg = str.split("\n").last
-  if msg =~ /(\d)\sfailure/
-    img = $1.to_i > 0 ? 'fail' : 'pass'
-  end
-  growl 'Results', msg, img
-end
-
 def run(cmd)
   puts cmd
   output = ""
@@ -20,7 +8,7 @@ def run(cmd)
       $stdout.flush
     end
   end
-  form_growl_message output
+  output
 end
 
 def run_spec(path)
