@@ -8,7 +8,7 @@ Bundler.require(:default, :development)
 require 'hunt'
 
 MongoMapper.connection = Mongo::Connection.new
-MongoMapper.database   = 'hunt-test'
+MongoMapper.database   = 'test'
 
 Rspec.configure do |c|
   c.before(:each) do
