@@ -22,10 +22,7 @@ end
 describe Hunt do
   it "adds searches key to model to store search terms" do
     Note.searches(:title)
-    begin
     Note.new.should respond_to(:searches)
-  rescue Exception => e
-    puts e.backtrace.inspect
   end
     
     Note.new.should respond_to(:searches=)
