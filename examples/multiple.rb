@@ -6,7 +6,7 @@ MongoMapper.database = 'testing'
 
 class Note
   include MongoMapper::Document
-  plugin Hunt
+  include Hunt
 
   key :title, String
   key :tags,  Array

@@ -2,8 +2,7 @@ require 'helper'
 
 class Note
   include MongoMapper::Document
-
-  plugin Hunt
+  include Hunt
 
   scope :by_user, lambda { |user| where(:user_id => user.id) }
 
@@ -24,6 +23,8 @@ describe Hunt do
   it "adds searches key to model to store search terms" do
     Note.searches(:title)
     Note.new.should respond_to(:searches)
+  end
+    
     Note.new.should respond_to(:searches=)
   end
 
