@@ -5,7 +5,7 @@ require 'hunt/util'
 module Hunt
   extend ActiveSupport::Concern
 
-  def self.configure(model)
+  def self.included(model)
     model.before_save(:index_search_terms)
   end
 
