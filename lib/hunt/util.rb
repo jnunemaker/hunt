@@ -27,6 +27,14 @@ module Hunt
       "the", "how"
     ]
 
+    def words_to_ignore
+      @@words_to_ignore ||= WordsToIgnore
+    end
+
+    def update_words_to_ignore(value)
+      @@words_to_ignore = words_to_ignore + value
+    end
+
     def strip_puncuation(value)
       value.to_s.gsub(StripPunctuationRegex, PunctuationReplacement)
     end
@@ -42,7 +50,7 @@ module Hunt
         split(Separator).
         map     { |word| word.downcase }.
         reject  { |word| word.size < 2 }.
-        reject  { |word| WordsToIgnore.include?(word) }.
+        reject  { |word| words_to_ignore.include?(word) }.
         map     { |word| strip_puncuation(word) }.
         reject  { |word| word.blank? }.
         uniq

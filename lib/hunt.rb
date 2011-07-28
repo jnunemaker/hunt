@@ -20,6 +20,10 @@ module Hunt
       @search_keys = keys
     end
 
+    def additional_words_to_ignore(words)
+      Util.update_words_to_ignore(words) if words.any?
+    end
+
     def search(term)
       where('searches.default' => Util.to_stemmed_words(term))
     end

@@ -13,6 +13,7 @@ class Note
   key :user_id, ObjectId
 
   belongs_to :user
+
 end
 
 class User
@@ -35,6 +36,13 @@ describe Hunt do
     it "returns query that matches nothing if nil" do
       Note.create(:title => 'Mongo')
       Note.search(nil).count.should == 0
+    end
+
+    it 'should ommit additional words to ignore' do
+      Note.additional_words_to_ignore ["bang", 'yabadabaduu']
+      Note.create(:title => 'bang yabadabaduu')
+      Note.search('bang').count.should == 0
+      Note.search('yabadabaduu').count.should == 0
     end
 
     it "returns query that matches nothing if blank" do
