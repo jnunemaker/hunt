@@ -5,8 +5,18 @@ require 'hunt/util'
 module Hunt
   extend ActiveSupport::Concern
 
-  def self.included(model)
-    model.before_save(:index_search_terms)
+  class << self
+    def included(model)
+      model.before_save(:index_search_terms)
+    end
+
+    def configure(&block)
+      block.call(self) if block_given?
+    end
+
+    def additional_words_to_ignore(words)
+      Util.update_words_to_ignore(words) if words.any?
+    end
   end
 
   module ClassMethods
@@ -18,10 +28,6 @@ module Hunt
       # Using a hash to support multiple indexes per document at some point
       key(:searches, Hash)
       @search_keys = keys
-    end
-
-    def additional_words_to_ignore(words)
-      Util.update_words_to_ignore(words) if words.any?
     end
 
     def search(term)
