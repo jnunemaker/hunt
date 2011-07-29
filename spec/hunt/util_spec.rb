@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'helper'
 
 describe Hunt::Util do
@@ -51,6 +52,10 @@ describe Hunt::Util do
 
     it "removes duplicates" do
       Hunt::Util.to_words('boom boom').should == %w(boom)
+    end
+
+    it 'should transliterate unicode words to asci format' do
+      Hunt::Util.to_words('łąkę źródło łódź Börse äußert').should == %w(lake zrodlo lodz borse aussert)
     end
   end
 

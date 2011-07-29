@@ -44,6 +44,7 @@ module Hunt
     end
 
     def to_words(value)
+      value = value.ascii_only? ? value : value.to_slug.transliterate unless value.nil?
       value.
         to_s.
         squeeze(Separator).
