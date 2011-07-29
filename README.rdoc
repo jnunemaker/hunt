@@ -18,7 +18,14 @@ Declare the plugin.
     searches :title, :body, :tags
   end
 
+You can configure Hunt using a Hunt.configure and passing block of options(at the moment there is only option for additional_words_to_ignore)
+
+   Hunt.configure do |config|
+     config.additional_words_to_ignore ["bang", 'yabadabaduu']
+   end
+
 This creates a key named searches that is a Hash. Title, body, and tags get mashed together before save into a unique array of stemmed words and stored in searches.default.
+If word contains non ascii chars, they'll be transliterated to ascii format using a utilities of babosa gem.
 
 You can index the terms individually or with any other combination of keys.
 
