@@ -27,6 +27,7 @@ module Hunt
     def searches(*keys)
       # Using a hash to support multiple indexes per document at some point
       key(:searches, Hash)
+      ensure_index :'searches.default'
       @search_keys = keys
     end
 
