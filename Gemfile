@@ -1,7 +1,8 @@
 source "http://rubygems.org"
 
-gem 'bson_ext', '1.1.5', :require => false
+gem 'bson_ext', :require => false
 
 gemspec
 
 gem 'i18n'
+gem 'rake'

@@ -3,8 +3,10 @@ require 'mongo_mapper'
 require 'hunt/util'
 
 module Hunt
-  def self.configure(model)
-    model.before_save(:index_search_terms)
+  extend ActiveSupport::Concern
+
+  included do
+    before_save(:index_search_terms)
   end
 
   module ClassMethods
