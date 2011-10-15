@@ -18,9 +18,10 @@ Declare the plugin.
     searches :title, :body, :tags
   end
 
-You can configure Hunt using a Hunt.configure and passing block of options(at the moment there is only option for additional_words_to_ignore)
+You can configure Hunt using a Hunt.configure and passing block of options:
 
    Hunt.configure do |config|
+     config.searches_index_name = :"searches.default"
      config.additional_words_to_ignore ["bang", 'yabadabaduu']
    end
 
@@ -30,7 +31,10 @@ If word contains non ascii chars, they'll be transliterated to ascii format usin
 You can index the terms individually or with any other combination of keys.
 
   Note.ensure_index :'searches.default' # or ...
-  Note.ensure_index [[:user_id, Mongo::Ascending], [:'searches.default', Mongo::Ascending]]
+  Note.ensure_index [[:user_id, Mongo::ASCENDING], [:'searches.default', Mongo::ASCENDING]] # or use config block
+  Hunt.configure do |config|
+    config.searches_index_name = :"searches.default"
+  end
 
 You also get a search class method that returns a scope.
 
