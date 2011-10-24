@@ -1,4 +1,5 @@
 require 'helper'
+#encoding: utf-8
 
 class Note
   include MongoMapper::Document
@@ -28,23 +29,6 @@ describe Hunt do
     Note.new.should respond_to(:searches=)
   end
 
-  it "adds index key as symbol if it was defined" do
-    searches_index_name = :"searches.default"
-    Hunt.configure do |config|
-      config.searches_index_name = searches_index_name
-    end
-    Hunt.searches_index_name.should == searches_index_name
-  end
-
-  it "adds index as array if it was defined" do
-    searches_index_name = [[:"searches.default", Mongo::ASCENDING], [:user_dir, Mongo::ASCENDING]]
-    Hunt.configure do |config|
-      config.searches_index_name = searches_index_name
-    end
-    Hunt.searches_index_name.should == searches_index_name
-
-  end
-
   describe ".search" do
     before(:each) do
       Note.searches(:title)
@@ -62,6 +46,12 @@ describe Hunt do
 
 
     context 'using .configure' do
+      after(:all) do
+        Hunt.configure do |config|
+          config.transliteration_option = nil
+        end
+      end
+
       it 'returns a query result when black list was not updated' do
         Hunt.configure
         Note.create(:title => 'bang yabadabaduu')
@@ -71,11 +61,38 @@ describe Hunt do
 
       it 'should ommit words which was added to black list' do
         Hunt.configure do |config|
-          config.additional_words_to_ignore ["bang", 'yabadabaduu']
+          config.additional_words_to_ignore = ["bang", 'yabadabaduu']
         end
         Note.create(:title => 'bang yabadabaduu')
         Note.search('bang').count.should == 0
         Note.search('yabadabaduu').count.should == 0
+      end
+
+      it "adds index key as symbol if it was defined" do
+        searches_index_name = :"searches.default"
+        Hunt.configure do |config|
+          config.searches_index_name = searches_index_name
+        end
+        Hunt.searches_index_name.should == searches_index_name
+      end
+
+      it "adds index as array if it was defined" do
+        searches_index_name = [[:"searches.default", Mongo::ASCENDING], [:user_dir, Mongo::ASCENDING]]
+        Hunt.configure do |config|
+          config.searches_index_name = searches_index_name
+        end
+        Hunt.searches_index_name.should == searches_index_name
+      end
+
+      it "should set transliteration_option if it was defined" do
+        transliteration_option = :german
+        Hunt.transliteration_option.should be_nil
+        Hunt.configure do |config|
+          config.transliteration_option = transliteration_option
+        end
+        Hunt.transliteration_option.should == transliteration_option
+        Note.create(:title => data_samples["german"]['note_title'] )
+        Note.search(data_samples["german"]['search_phrase']).count.should == 1
       end
     end
 

@@ -27,12 +27,22 @@ module Hunt
       "the", "how"
     ]
 
+    @@transliteration_option = nil
+
     def words_to_ignore
       @@words_to_ignore ||= WordsToIgnore
     end
 
     def update_words_to_ignore(value)
       @@words_to_ignore = words_to_ignore + value
+    end
+
+    def transliteration_option=(value)
+      @@transliteration_option = value
+    end
+
+    def transliteration_option
+      @@transliteration_option
     end
 
     def strip_puncuation(value)
@@ -44,7 +54,7 @@ module Hunt
     end
 
     def to_words(value)
-      value = value.ascii_only? ? value : value.to_slug.transliterate unless value.nil?
+      value = value.ascii_only? ? value : value.to_slug.transliterate(transliteration_option) unless value.nil?
       value.
         to_s.
         squeeze(Separator).

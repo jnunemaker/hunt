@@ -16,7 +16,7 @@ module Hunt
       block.call(self) if block_given?
     end
 
-    def additional_words_to_ignore(words)
+    def additional_words_to_ignore=(words)
       Util.update_words_to_ignore(words) if words.any?
     end
 
@@ -26,6 +26,14 @@ module Hunt
 
     def searches_index_name
       @@searches_index_name
+    end
+
+    def transliteration_option=(value)
+      Util.transliteration_option = value
+    end
+
+    def transliteration_option
+      Util.transliteration_option
     end
   end
 

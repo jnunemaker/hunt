@@ -15,3 +15,7 @@ Rspec.configure do |c|
     MongoMapper.database.collections.each(&:remove)
   end
 end
+
+def data_samples
+  @data_samples ||= YAML.load(File.open(File.expand_path("../data/samples.yml", __FILE__)))
+end

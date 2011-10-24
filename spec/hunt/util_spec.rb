@@ -17,6 +17,11 @@ describe Hunt::Util do
   end
 
   describe ".to_words" do
+
+    after(:all) do
+      Hunt::Util.transliteration_option = nil
+    end
+
     it "does not fail with nil" do
       Hunt::Util.to_words(nil).should == []
     end
@@ -56,6 +61,11 @@ describe Hunt::Util do
 
     it 'should transliterate unicode words to asci format' do
       Hunt::Util.to_words('łąkę źródło łódź Börse äußert').should == %w(lake zrodlo lodz borse aussert)
+    end
+
+    it "should transliterate cyrllic words with transliteration_option" do
+      Hunt::Util.transliteration_option = :cyrillic
+      Hunt::Util.to_words(data_samples['cyrillic']['sample']).should == %w(karta sajta)
     end
   end
 
